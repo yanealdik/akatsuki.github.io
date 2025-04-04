@@ -13,7 +13,7 @@ import reactIcon from '../../assets/images/react-icon.svg';
 import htmlIcon from '../../assets/images/html-icon.svg';
 import cssIcon from '../../assets/images/css-icon.svg';
 // Импортируем новые иконки
-import cppIcon from '../../assets/images/c++.svg';
+import cppIcon from '../../assets/images/cpp.svg';
 import csharpIcon from '../../assets/images/charp.svg';
 import jsIcon from '../../assets/images/JavaScript.svg';
 
