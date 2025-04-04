@@ -1,0 +1,47 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout код
+        uses: actions/checkout@v4
+
+      - name: Настройка Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Новая версия для поддержки React 19
+          cache: 'npm'
+
+      - name: Установка зависимостей
+        run: npm ci
+        
+      - name: Проверка линтером
+        run: npm run lint
+        
+      - name: Сборка проекта
+        run: npm run build
+        env:
+          NODE_ENV: production
+          
+      # Исправление для Vite, так как он собирает в папку dist, а не build
+      - name: Подготовка к деплою
+        run: |
+          cp dist/index.html dist/404.html
+          touch dist/.nojekyll
+        
+      - name: Деплой на GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist # У Vite папка сборки dist, а не build
+          branch: gh-pages
+          commit-message: "Deploy: ${{ github.event.head_commit.message }}"
