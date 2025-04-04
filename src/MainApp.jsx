@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
-import App from "./App.jsx";
-import Load from "./components/Loading/Load";
+import App from "./src/App.jsx";
+import Load from "./src/components/Loading/Load.jsx";
 
 export default function MainApp() {
   const [isLoading, setIsLoading] = useState(true);
