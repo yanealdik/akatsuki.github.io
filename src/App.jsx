@@ -87,7 +87,7 @@ function App() {
   };
 
   return (
-    <Router>
+    <Router basename="/akatsuki.github.io">
       <Routes>
         <Route
           path="/"
