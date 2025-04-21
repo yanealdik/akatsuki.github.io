@@ -22,8 +22,7 @@ const ProtectedRoute = ({ children }) => {
 };
 
 // Главная страница как компонент
-function Home({ 
-  handleCourseClick, 
+function Home({  
   handleLanguageClick, 
   isModalOpen, 
   selectedCourseId, 
