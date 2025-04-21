@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
+  base: '/akatsuki.github.io/',
   resolve: {
     alias: {
       '@components': '/src/components',
@@ -13,4 +14,5 @@ export default defineConfig({
       '/api': 'http://127.0.0.1:5000',
     },
   },
+
 });
