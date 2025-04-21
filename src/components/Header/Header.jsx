@@ -1,8 +1,9 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../../assets/images/akat.png";
 import userIcon from "../../assets/images/User/User_01.svg";
 import Profile from "../Profile/Profile";
+import "./Header.css";
 
 const Header = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);

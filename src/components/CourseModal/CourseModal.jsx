@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './CourseModal.css';
+import { useNavigate } from "react-router-dom";
+
 
 // Иконки для сложности
 import easyIcon from '../../assets/images/easy-icon.svg';
@@ -23,6 +25,10 @@ import erlan from '../../assets/images/Erlan.jpg';
 import beka from '../../assets/images/beka.jpg';
 import kian from '../../assets/images/kian.jpg';
 import alex from '../../assets/images/alex.png';
+
+
+
+
 // Данные курсов
 const courses = [
   // Пример обновленной структуры курса с несколькими инструкторами
@@ -210,6 +216,9 @@ const courses = [
   }
 ];
 
+
+
+
 // Получение иконки сложности
 const getDifficultyIcon = (difficulty) => {
   switch(difficulty) {
@@ -232,6 +241,14 @@ const getDifficultyColor = (difficulty) => {
 
 const CourseModal = ({ isOpen, onClose, courseId = null, languageName = null, onViewAllClick = () => {} }) => {
   // Фильтруем курсы по языку, если указан язык
+  const navigate = useNavigate();
+
+const handleEnroll = () => {
+  if (selectedCourse) {
+    onClose(); // Закрываем модалку
+    navigate(`/courses/${selectedCourse.id}/lessons`);
+  }
+};
   const [filteredCourses, setFilteredCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
 
@@ -382,7 +399,7 @@ const CourseModal = ({ isOpen, onClose, courseId = null, languageName = null, on
                 </div>
                 
                 <div className="course-actions">
-                  <button className="enroll-button">Записаться на курс</button>
+                <button className="enroll-button" onClick={handleEnroll}>Записаться на курс</button>
                   <button className="save-button">Сохранить на потом</button>
                 </div>
               </div>

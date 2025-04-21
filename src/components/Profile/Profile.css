@@ -1,54 +1,53 @@
 /* Профиль скрыт по умолчанию */
 .profile-panel {
-    position: fixed;
-    top: 0;
-    right: -350px; /* Прячем за пределами экрана */
-    width: 350px;
-    height: 100vh;
-    background: #1c1c1c;
-    color: white;
-    transition: right 0.5s ease-in-out;
-    box-shadow: -5px 0 10px rgba(0, 0, 0, 0.5);
-    padding: 20px;
-    border-radius: 20px 0 0 20px;
+  position: fixed;
+  top: 0;
+  right: -350px; /* Прячем за пределами экрана */
+  width: 350px;
+  height: 100vh;
+  background: #1c1c1c;
+  color: white;
+  transition: right 0.5s ease-in-out;
+  box-shadow: -5px 0 10px rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  border-radius: 20px 0 0 20px;
 }
 
-
 .profile-btn {
-    position: fixed;
-    top: -18px;
-    right: 20px;
-    cursor: pointer;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000; /* Убедись, что она выше других элементов */
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; /* Убедись, что она выше других элементов */
 }
 
 .profile-sidebar {
-    position: fixed;
-    top: 70px;
-    right: -350px; /* Прячем за экраном */
-    width: 350px;
-    height: 210px;
-    background: #1a1a1a;
-    box-shadow: -3px 0 10px rgba(0, 0, 0, 0.5);
-    padding: 20px;
-    border-radius: 28px;
-    opacity: 0;
-    transition: right 0.7s ease-in-out, opacity 0.9s ease-in-out;
+  position: fixed;
+  top: 70px;
+  right: -350px; /* Прячем за экраном */
+  width: 350px;
+  height: 210px;
+  background: #1a1a1a;
+  box-shadow: -3px 0 10px rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  border-radius: 28px;
+  opacity: 0;
+  transition: right 0.7s ease-in-out, opacity 0.9s ease-in-out;
 }
 
 .profile-sidebar.active {
-    right: 30px; /* Выдвигаем */
-    opacity: 1;
+  right: 30px; /* Выдвигаем */
+  opacity: 1;
 }
 
 .profile-sidebar.unactive {
-    right: -350px; /* Уезжает назад */
-    opacity: 0; /* Исчезает */
+  right: -350px; /* Уезжает назад */
+  opacity: 0; /* Исчезает */
 }
 
 .xp-bar-container {
@@ -62,13 +61,11 @@
 }
 
 .xp-bar {
-    width: 0%; /* Начальное значение */
-    height: 100%;
-    background: #a22;
-    transition: width 1s ease-in-out;
-  }
-  
-
+  width: 0%; /* Начальное значение */
+  height: 100%;
+  background: #a22;
+  transition: width 1s ease-in-out;
+}
 
 .xp-text {
   position: absolute;
@@ -103,25 +100,52 @@
   position: absolute;
   right: 25px;
   top: 170px;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
 }
 
-.new-rank{
+.logout-btn:hover {
+  transform: scale(1.1);
+}
+
+.new-rank {
   position: absolute;
   right: 25px;
   top: 90px;
 }
-.xp-txt{
+
+.xp-txt {
   position: absolute;
   right: 226px;
   top: 90px;
 }
-.setting{
+
+.setting {
   position: absolute;
   right: 210px;
   top: 150px;
+  cursor: pointer;
+  transition: color 0.3s ease;
 }
-.setting-btn{
+
+.setting:hover {
+  color: #a22;
+  text-decoration: underline;
+}
+
+.setting-btn {
   position: absolute;
   right: 305px;
   top: 150px;
+  cursor: pointer;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
 }
