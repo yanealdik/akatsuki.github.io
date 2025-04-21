@@ -15,6 +15,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@components': '/src/components',
+      // Убери crypto, если он не используется
     },
   },
   server: {

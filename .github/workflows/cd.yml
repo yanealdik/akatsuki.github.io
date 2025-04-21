@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ main ]  # Или master, в зависимости от названия вашей основной ветки
+    branches: [ main ]  # Or master, depending on your branch name
 
 jobs:
   build-and-deploy:
@@ -19,10 +19,11 @@ jobs:
       - name: Install and Build 🔧
         run: |
           npm ci
+          npm install --save-dev node-polyfill-webpack-plugin
           npm run build
           
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: dist  # Папка Vite по умолчанию
-          branch: gh-pages  # Ветка для деплоя
+          folder: dist  # Default folder for Vite
+          branch: gh-pages  # Deployment branch
