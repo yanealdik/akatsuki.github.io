@@ -246,7 +246,7 @@ const CourseModal = ({ isOpen, onClose, courseId = null, languageName = null, on
 const handleEnroll = () => {
   if (selectedCourse) {
     onClose(); // Закрываем модалку
-    navigate(`/courses/${selectedCourse.id}/lessons`);
+    navigate(`/courses/${selectedCourse.id}/player`); // Переходим на страницу курса
   }
 };
   const [filteredCourses, setFilteredCourses] = useState([]);

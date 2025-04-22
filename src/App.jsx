@@ -9,7 +9,7 @@ import Footer from "./components/Footer/Footer";
 import CourseModal, { CourseGrid } from "./components/CourseModal/CourseModal";
 import Tutorial from "./components/Lesson_Tutorial/Tutorial";
 import Testimonials from "./components/Reviews/Reviews";
-import CourseLessonPage from "./components/CourseLessonPage/CourseLessonPage";
+import CoursePlayerPage from "./components/CoursePlayerPage/CoursePlayerPage";
 import AuthPage from "./components/AuthPage/AuthPage";
 import ProfilePage from "./components/ProfilePage/ProfilePage";
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
@@ -38,7 +38,7 @@ function Home({
       <div className="about-itachi-container">
         <AboutUs />
       <ErrorBoundary>
-     <Itachi />
+        <Itachi />
         </ErrorBoundary>
       </div>
 
@@ -116,12 +116,10 @@ function App() {
           } 
         />
         <Route
-          
           path="/courses"
           element={
-            
             <>
-            <Header />
+              <Header />
               <section className="section section-spacing" id="courses-section">
                 <h2 className="section-title">Наши курсы</h2>
                 <CourseGrid onCourseClick={handleCourseClick} />
@@ -137,11 +135,12 @@ function App() {
             </>
           }
         />
+        {/* Маршрут для интерактивной страницы с видео, тестами и сертификацией */}
         <Route
-          path="/courses/:id/lessons"
+          path="/courses/:courseId/player"
           element={
-            <div className="course-lesson-wrapper">
-              <CourseLessonPage />
+            <div className="course-player-wrapper">
+              <CoursePlayerPage />
             </div>
           }
         />
