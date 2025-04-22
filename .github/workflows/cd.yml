@@ -14,10 +14,10 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '22s'
           
           - name: Install and Build 🔧
-          run: |
+          run: |s
             npm ci
             npm install --save-dev node-polyfill-webpack-plugin crypto-browserify
             npm run build

@@ -6,7 +6,7 @@ import "./Itachi.css";
 import "./Itachi3d.css";
 
 const ItachiModel = ({ isVisible }) => {
-  const gltf = useLoader(GLTFLoader, "/models/itachi/scene.gltf");
+  const gltf = useLoader(GLTFLoader, "/akatsuki.github.io/models/itachi/scene.gltf");
   const itachiRef = useRef();
 
   useFrame(() => {
