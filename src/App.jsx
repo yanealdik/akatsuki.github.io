@@ -12,6 +12,7 @@ import Testimonials from "./components/Reviews/Reviews";
 import CourseLessonPage from "./components/CourseLessonPage/CourseLessonPage";
 import AuthPage from "./components/AuthPage/AuthPage";
 import ProfilePage from "./components/ProfilePage/ProfilePage";
+import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 import './App.css';
 
 // Защищенный маршрут как компонент
@@ -34,10 +35,12 @@ function Home({
     <div className="home-container">
       <Header />
       <div className="hero-section">
-        <div className="about-itachi-container">
-          <AboutUs />
-          <Itachi />
-        </div>
+      <div className="about-itachi-container">
+        <AboutUs />
+      <ErrorBoundary>
+     <Itachi />
+        </ErrorBoundary>
+      </div>
 
         <LanguagesSwiper onLanguageClick={handleLanguageClick} />
         <Tutorial className="section-spacing" />

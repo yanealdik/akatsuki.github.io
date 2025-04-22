@@ -16,11 +16,11 @@ jobs:
         with:
           node-version: '16'
           
-      - name: Install and Build 🔧
-        run: |
-          npm ci
-          npm install --save-dev node-polyfill-webpack-plugin crypto-browserify
-          npm run build
+          - name: Install and Build 🔧
+          run: |
+            npm ci
+            npm install --save-dev node-polyfill-webpack-plugin crypto-browserify
+            npm run build
           
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
