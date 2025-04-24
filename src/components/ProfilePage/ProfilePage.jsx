@@ -54,7 +54,7 @@ const ProfilePage = () => {
           <div className="active-courses">
             {userData.courses.map(course => (
               <div className="course-card" key={course.id}>
-                <div className="course-image">
+                <div className="course-imagee">
                   <img src={course.image} alt={course.name} />
                 </div>
                 <div className="course-info">
@@ -105,7 +105,7 @@ const ProfilePage = () => {
       <div className="courses-grid">
         {userData.courses.map(course => (
           <div className="course-card-full" key={course.id}>
-            <div className="course-image">
+            <div className="course-imagee">
               <img src={course.image} alt={course.name} />
             </div>
             <div className="course-details">

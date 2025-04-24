@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-
 import Header from "./components/Header/Header";
 import Itachi from "./components/Itachi/Itachi";
 import { AboutUs } from "./components/Info/AboutUs";
@@ -23,30 +22,28 @@ const ProtectedRoute = ({ children }) => {
 };
 
 // Главная страница как компонент
-function Home({  
-  handleLanguageClick, 
-  isModalOpen, 
-  selectedCourseId, 
-  selectedLanguage, 
-  scrollToCourses, 
+function Home({
+  handleLanguageClick,
+  handleCourseClick,
+  isModalOpen,
+  selectedCourseId,
+  selectedLanguage,
+  scrollToCourses,
   onCloseModal 
 }) {
   return (
     <div className="home-container">
       <Header />
       <div className="hero-section">
-      <div className="about-itachi-container">
-        <AboutUs />
-      <ErrorBoundary>
-        <Itachi />
-        </ErrorBoundary>
-      </div>
-
+        <div className="about-itachi-container">
+          <AboutUs />
+          <ErrorBoundary>
+            <Itachi />
+          </ErrorBoundary>
+        </div>
         <LanguagesSwiper onLanguageClick={handleLanguageClick} />
         <Tutorial className="section-spacing" />
-
         <Testimonials />
-
         <CourseModal 
           isOpen={isModalOpen}
           onClose={onCloseModal}
@@ -108,12 +105,10 @@ function App() {
         />
         <Route path="/login" element={<AuthPage />} />
         <Route 
-          path="/profile" 
+          path="/profile"
           element={
-          
-              <ProfilePage />
-            
-          } 
+            <ProfilePage />
+          }
         />
         <Route
           path="/courses"
@@ -124,7 +119,6 @@ function App() {
                 <h2 className="section-title">Наши курсы</h2>
                 <CourseGrid onCourseClick={handleCourseClick} />
               </section>
-
               <CourseModal 
                 isOpen={isModalOpen}
                 onClose={handleCloseModal}
@@ -138,6 +132,15 @@ function App() {
         {/* Маршрут для интерактивной страницы с видео, тестами и сертификацией */}
         <Route
           path="/courses/:courseId/player"
+          element={
+            <div className="course-player-wrapper">
+              <CoursePlayerPage />
+            </div>
+          }
+        />
+        {/* Новый маршрут для формата /course/:courseId/lesson/:lessonId */}
+        <Route
+          path="/course/:courseId/lesson/:lessonId"
           element={
             <div className="course-player-wrapper">
               <CoursePlayerPage />

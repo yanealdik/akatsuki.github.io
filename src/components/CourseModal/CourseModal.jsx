@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import './CourseModal.css';
 import { useNavigate } from "react-router-dom";
 
-
 // Иконки для сложности
 import easyIcon from '../../assets/images/easy-icon.svg';
 import mediumIcon from '../../assets/images/medium-icon.svg';
@@ -10,9 +9,8 @@ import hardIcon from '../../assets/images/hard-icon.svg';
 import py from '../../assets/images/py.png';
 import ml from '../../assets/images/ml.png';
 import dta from '../../assets/images/dta.png';
-import coursera from '../../assets/images/coursera.png';
 import cppdev from '../../assets/images/cpp-dev.png';
-import csharpdev from '../../assets/images/csharp-dev.png'; // Добавим логотип Coursera
+import csharpdev from '../../assets/images/csharp-dev.png';
 import deeplearning from '../../assets/images/deep-learning.png';
 import algorithms from '../../assets/images/algorithms.png';
 import reactnative from '../../assets/images/react-native.png';
@@ -26,28 +24,25 @@ import beka from '../../assets/images/beka.jpg';
 import kian from '../../assets/images/kian.jpg';
 import alex from '../../assets/images/alex.png';
 
-
-
-
 // Данные курсов
 const courses = [
   // Пример обновленной структуры курса с несколькими инструкторами
-{
-  id: 1,
-  title: 'Математика для ML',
-  image: ml,
-  provider: 'Imperial College London',
-  difficulty: 'Hard',
-  category: 'Искусственный интеллект',
-  xp: 1500,
-  description: 'Изучите математические основы машинного обучения, включая линейную алгебру, статистику и оптимизацию.',
-  skills: ['Линейная алгебра', 'Статистика', 'Теория вероятностей', 'Математический анализ'],
-  duration: '8 недель',
-  languages: ['Python', 'R'],
-  teacher: [
-    { name: "Andrew Ng", avatar: andrew }
-  ]
-},
+  {
+    id: 3,
+    title: 'Математика для ML',
+    image: ml,
+    provider: 'Imperial College London',
+    difficulty: 'Hard',
+    category: 'Искусственный интеллект',
+    xp: 1500,
+    description: 'Изучите математические основы машинного обучения, включая линейную алгебру, статистику и оптимизацию.',
+    skills: ['Линейная алгебра', 'Статистика', 'Теория вероятностей', 'Математический анализ'],
+    duration: '8 недель',
+    languages: ['Python', 'R'],
+    teacher: [
+      { name: "Andrew Ng", avatar: andrew }
+    ]
+  },
   {
     id: 2,
     title: 'Профессиональная сертификация Google Data Analytics',
@@ -65,7 +60,7 @@ const courses = [
     ]
   },
   {
-    id: 3,
+    id: 1,
     title: 'Программирование для всех (начало работы с Python)',
     image: py,
     provider: 'University of Michigan',
@@ -91,11 +86,10 @@ const courses = [
     description: 'Создавайте современные интерфейсы с использованием библиотеки React.',
     skills: ['JavaScript', 'React', 'HTML', 'CSS', 'Компонентный подход'],
     duration: '6 недель',
-    languages: ['JavaScript', 'React', 'HTML', 'CSS'],
+    languages: [ 'React'],
     teacher: [
       { name: "Ерлан Кадырович", avatar: erlan }
     ]
-    
   },
   {
     id: 5,
@@ -108,7 +102,7 @@ const courses = [
     description: 'Изучите принципы работы компьютерных систем, от транзисторов до высокоуровневой архитектуры.',
     skills: ['Цифровая логика', 'Ассемблер', 'Организация памяти', 'Процессоры'],
     duration: '10 недель',
-    languages: ['C++', 'C#', 'Ассемблер'],
+    languages: ['C++',  'Ассемблер'],
     teacher: [
       { name: "Мубарак Бекзат", avatar: beka }
     ]
@@ -154,7 +148,7 @@ const courses = [
     description: 'Создавайте кроссплатформенные мобильные приложения с использованием React Native.',
     skills: ['React Native', 'JavaScript', 'iOS', 'Android', 'Expo'],
     duration: '8 недель',
-    languages: ['JavaScript', 'React'],
+    languages: ['React'],
     teacher: [
       { name: "Ерлан Кадырович", avatar: erlan }
     ]
@@ -216,9 +210,6 @@ const courses = [
   }
 ];
 
-
-
-
 // Получение иконки сложности
 const getDifficultyIcon = (difficulty) => {
   switch(difficulty) {
@@ -242,16 +233,49 @@ const getDifficultyColor = (difficulty) => {
 const CourseModal = ({ isOpen, onClose, courseId = null, languageName = null, onViewAllClick = () => {} }) => {
   // Фильтруем курсы по языку, если указан язык
   const navigate = useNavigate();
-
-const handleEnroll = () => {
-  if (selectedCourse) {
-    onClose(); // Закрываем модалку
-    navigate(`/courses/${selectedCourse.id}/player`); // Переходим на страницу курса
-  }
-};
+  
+  // Обновленная функция handleEnroll для перехода на страницу курса с выбранным языком программирования
+  const handleEnroll = () => {
+    if (selectedCourse) {
+      onClose(); // Закрываем модалку
+      
+      // Получаем язык программирования из выбранного курса
+      const programmingLanguage = selectedCourse.languages && selectedCourse.languages[0] ? 
+        selectedCourse.languages[0].toLowerCase() : 'javascript';
+      
+      // Определяем соответствующий идентификатор языка для CoursePlayerPage
+      let languageId;
+      switch(programmingLanguage.toLowerCase()) {
+        case 'python':
+          languageId = 'python';
+          break;
+        case 'c#':
+          languageId = 'csharp';
+          break;
+        case 'c++':
+          languageId = 'cpp';
+          break;
+        case 'react':
+          languageId = 'react';
+          break;
+        case 'html':
+        case 'css':
+          languageId = 'htmlcss';
+          break;
+        case 'javascript':
+        default:
+          languageId = 'javascript';
+      }
+      
+      // Переходим на страницу курса с соответствующим языком
+      // Используем формат URL, соответствующий маршруту в App.jsx
+      navigate(`/course/${languageId}/lesson/1.1`);
+    }
+  };
+  
   const [filteredCourses, setFilteredCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
-
+  
   useEffect(() => {
     if (languageName) {
       // Если указан язык, фильтруем курсы по нему
@@ -293,10 +317,6 @@ const handleEnroll = () => {
         {languageName && (
           <div className="modal-language-header">
             <h2>{languageName} - Рекомендуемые курсы</h2>
-            <div className="coursera-partnership">
-              <span>Akatsuki Courses × </span>
-              <img src={coursera} alt="Coursera" className="coursera-logo"/>
-            </div>
           </div>
         )}
         
@@ -305,7 +325,7 @@ const handleEnroll = () => {
             <div className="language-courses-grid">
               {filteredCourses.slice(0, 3).map((course) => (
                 <div 
-                  key={course.id} 
+                  key={course.id}
                   className={`language-course-card ${selectedCourse && selectedCourse.id === course.id ? 'selected' : ''}`}
                   onClick={() => setSelectedCourse(course)}
                 >
@@ -358,7 +378,7 @@ const handleEnroll = () => {
                         <div key={index} className="instructor-item">
                           <div className="instructor-avatar">
                             {teacher.avatar ? 
-                              <img src={teacher.avatar} alt={teacher.name} /> : 
+                              <img src={teacher.avatar} alt={teacher.name} /> :
                               <div className="avatar-placeholder">{teacher.name.charAt(0)}</div>
                             }
                           </div>
@@ -399,7 +419,7 @@ const handleEnroll = () => {
                 </div>
                 
                 <div className="course-actions">
-                <button className="enroll-button" onClick={handleEnroll}>Записаться на курс</button>
+                  <button className="enroll-button" onClick={handleEnroll}>Записаться на курс</button>
                   <button className="save-button">Сохранить на потом</button>
                 </div>
               </div>
@@ -428,11 +448,46 @@ const handleEnroll = () => {
 
 // Компонент для отображения карточек курсов в сетке
 export const CourseGrid = ({ onCourseClick }) => {
+  const navigate = useNavigate();
+  
+  const handleCourseClick = (course) => {
+    // Получаем язык программирования из курса
+    const programmingLanguage = course.languages && course.languages[0] ? 
+      course.languages[0].toLowerCase() : 'javascript';
+    
+    // Определяем соответствующий идентификатор языка
+    let languageId;
+    switch(programmingLanguage.toLowerCase()) {
+      case 'python':
+        languageId = 'python';
+        break;
+      case 'c#':
+        languageId = 'csharp';
+        break;
+      case 'c++':
+        languageId = 'cpp';
+        break;
+      case 'react':
+        languageId = 'react';
+        break;
+      case 'html':
+      case 'css':
+        languageId = 'htmlcss';
+        break;
+      case 'javascript':
+      default:
+        languageId = 'javascript';
+    }
+    
+    // Переходим на страницу курса с соответствующим языком
+    navigate(`/course/${languageId}/lesson/1.1`);
+  };
+  
   return (
     <div className="course-grid">
       {courses.map(course => (
         <div 
-          key={course.id} 
+          key={course.id}
           className="course-card"
           onClick={() => onCourseClick(course.id)}
         >
@@ -452,8 +507,8 @@ export const CourseGrid = ({ onCourseClick }) => {
               За завершение: {course.xp} XP
             </div>
             <button className="learn-button" onClick={(e) => {
-              e.stopPropagation(); 
-              onCourseClick(course.id);
+              e.stopPropagation();
+              handleCourseClick(course);
             }}>Изучить Технику</button>
           </div>
         </div>
@@ -463,3 +518,4 @@ export const CourseGrid = ({ onCourseClick }) => {
 };
 
 export default CourseModal;
+

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/images/akat.png";
+import { authAPI } from "../../services/api"; // Импортируем наш API сервис
 import "./AuthPage.css";
 
 const AuthPage = () => {
@@ -9,23 +10,64 @@ const AuthPage = () => {
     email: "",
     password: "",
     name: "",
-    confirmPassword: ""
+    verificated: ""
   });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Здесь будет логика авторизации/регистрации
-    // После успешной авторизации перенаправляем на профиль
-    navigate("/profile");
+    setError("");
+    setLoading(true);
+
+    try {
+      let response;
+      
+      if (isLogin) {
+        // Отправляем запрос на вход
+        response = await authAPI.login({
+          email: formData.email,
+          password: formData.password
+        });
+      } else {
+        // Отправляем запрос на регистрацию
+        response = await authAPI.register({
+          name: formData.name, // Используется как nickname
+          email: formData.email,
+          password: formData.password,
+          verificated: formData.verificated
+        });
+      }
+
+      // Если успешно, сохраняем токен и данные пользователя
+      if (response.data.token) {
+        localStorage.setItem('authToken', response.data.token);
+        localStorage.setItem('isAuthenticated', 'true');
+        
+        // Можно также сохранить некоторые данные пользователя
+        localStorage.setItem('userNickname', response.data.user.nickname);
+        
+        navigate("/profile");
+      }
+    } catch (err) {
+      console.error("Ошибка аутентификации:", err);
+      setError(
+        err.response?.data?.message || 
+        "Произошла ошибка при авторизации. Пожалуйста, попробуйте еще раз."
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   const toggleForm = () => {
     setIsLogin(!isLogin);
+    setError("");
   };
 
   return (
@@ -35,6 +77,8 @@ const AuthPage = () => {
           <img src={logo} alt="Лого" />
         </div>
         <h2>{isLogin ? "Вход в аккаунт" : "Регистрация"}</h2>
+        
+        {error && <div className="auth-error">{error}</div>}
         
         <form onSubmit={handleSubmit} className="auth-form">
           {!isLogin && (
@@ -46,6 +90,7 @@ const AuthPage = () => {
                 value={formData.name}
                 onChange={handleChange}
                 required
+                disabled={loading}
               />
             </div>
           )}
@@ -58,6 +103,7 @@ const AuthPage = () => {
               value={formData.email}
               onChange={handleChange}
               required
+              disabled={loading}
             />
           </div>
           
@@ -69,24 +115,30 @@ const AuthPage = () => {
               value={formData.password}
               onChange={handleChange}
               required
+              disabled={loading}
             />
           </div>
           
           {!isLogin && (
             <div className="form-group">
-              <label>Подтвердите пароль</label>
+              <label>Код для проверки</label>
               <input
-                type="password"
-                name="confirmPassword"
-                value={formData.confirmPassword}
+                type="text"
+                name="verificated"
+                value={formData.verificated}
                 onChange={handleChange}
                 required
+                disabled={loading}
               />
             </div>
           )}
           
-          <button type="submit" className="auth-btn">
-            {isLogin ? "Войти" : "Зарегистрироваться"}
+          <button type="submit" className="auth-btn" disabled={loading}>
+            {loading 
+              ? "Загрузка..." 
+              : isLogin 
+                ? "Войти" 
+                : "Зарегистрироваться"}
           </button>
         </form>
         
