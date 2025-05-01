@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { authAPI } from '../../services/api';
 import './AuthModal.css';
 
 const AuthModal = ({ isOpen, onClose, onSuccess, courseId }) => {
@@ -7,7 +8,7 @@ const AuthModal = ({ isOpen, onClose, onSuccess, courseId }) => {
     email: '',
     password: '',
     confirmPassword: '',
-    name: ''
+    nickname: ''  // изменено с name на nickname для соответствия бэкенду
   });
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -53,8 +54,8 @@ const AuthModal = ({ isOpen, onClose, onSuccess, courseId }) => {
         newErrors.confirmPassword = 'Пароли не совпадают';
       }
       
-      if (!formData.name) {
-        newErrors.name = 'Имя обязательно';
+      if (!formData.nickname) {
+        newErrors.nickname = 'Имя (никнейм) обязателен';
       }
     }
     
@@ -68,77 +69,77 @@ const AuthModal = ({ isOpen, onClose, onSuccess, courseId }) => {
     if (!validateForm()) return;
     
     setIsLoading(true);
+    setErrors({});
+    
     try {
-      const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
-      
-      // Prepare data based on form type
-      const requestData = isLogin 
-        ? { email: formData.email, password: formData.password }
-        : { email: formData.email, password: formData.password, name: formData.name };
-      
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(requestData),
-        credentials: 'include' // Important for cookies
-      });
-      
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.message || 'Произошла ошибка');
-      }
-      
-      // Set success message based on action
-      setSuccessMessage(isLogin 
-        ? 'Вход выполнен успешно!' 
-        : 'Регистрация успешна! Теперь вы можете войти.'
-      );
-      
-      // If successful and we have a token, store it
-      if (data.token) {
-        localStorage.setItem('authToken', data.token);
-      }
-      
-      // After short delay, close modal and notify parent component of success
-      setTimeout(() => {
-        onSuccess(data.user);
+      if (isLogin) {
+        // Вход
+        const response = await authAPI.login({
+          email: formData.email,
+          password: formData.password
+        });
         
-        // If login was successful and we have a courseId, enroll in the course
-        if (isLogin && courseId) {
-          enrollInCourse(courseId, data.token || localStorage.getItem('authToken'));
+        if (response.status && response.status !== 200) {
+          throw response;
         }
-      }, 1500);
-      
+        
+        // Сохраняем токен
+        authAPI.setAuthToken(response.data.token);
+        localStorage.setItem('isAuthenticated', 'true');
+        
+        setSuccessMessage('Вход выполнен успешно!');
+        
+        // После небольшой задержки закрываем модальное окно и уведомляем родительский компонент
+        setTimeout(() => {
+          onSuccess && onSuccess({
+            email: formData.email,
+            nickname: formData.nickname
+          });
+          
+          // Если вход был успешным и у нас есть courseId, записываемся на курс
+          if (courseId) {
+            enrollInCourse(courseId);
+          }
+        }, 1500);
+      } else {
+        // Регистрация
+        const response = await authAPI.register({
+          email: formData.email,
+          password: formData.password,
+          nickname: formData.nickname
+        });
+        
+        if (response.status && response.status !== 201) {
+          throw response;
+        }
+        
+        setSuccessMessage('Регистрация успешна! Теперь вы можете войти.');
+        
+        // После небольшой задержки переключаемся на форму входа
+        setTimeout(() => {
+          setIsLogin(true);
+          setFormData({
+            ...formData,
+            confirmPassword: '',
+            password: ''
+          });
+        }, 1500);
+      }
     } catch (error) {
+      console.error('Auth error:', error);
+      
       setErrors({
         ...errors,
-        general: error.message
+        general: error.message || 'Произошла ошибка при авторизации'
       });
     } finally {
       setIsLoading(false);
     }
   };
 
-  const enrollInCourse = async (courseId, token) => {
+  const enrollInCourse = async (courseId) => {
     try {
-      const response = await fetch(`/api/courses/${courseId}/enroll`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        credentials: 'include'
-      });
-      
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || 'Failed to enroll in course');
-      }
-      
-      // Enrollment successful
+      await authAPI.coursesAPI.enrollInCourse(courseId);
       console.log('Successfully enrolled in course');
     } catch (error) {
       console.error('Error enrolling in course:', error);
@@ -178,17 +179,17 @@ const AuthModal = ({ isOpen, onClose, onSuccess, courseId }) => {
         <form onSubmit={handleSubmit} className="auth-form">
           {!isLogin && (
             <div className="form-group">
-              <label htmlFor="name">Имя</label>
+              <label htmlFor="nickname">Имя (никнейм)</label>
               <input
                 type="text"
-                id="name"
-                name="name"
-                value={formData.name}
+                id="nickname"
+                name="nickname"
+                value={formData.nickname}
                 onChange={handleChange}
-                placeholder="Введите ваше имя"
-                className={errors.name ? 'input-error' : ''}
+                placeholder="Введите ваш никнейм"
+                className={errors.nickname ? 'input-error' : ''}
               />
-              {errors.name && <span className="error-text">{errors.name}</span>}
+              {errors.nickname && <span className="error-text">{errors.nickname}</span>}
             </div>
           )}
           

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import logo from "../../assets/images/akat.png";
-import { authAPI } from "../../services/api"; // Импортируем наш API сервис
+import { authAPI } from "../../services/api"; // Импортируем API сервис
 import "./AuthPage.css";
 
 const AuthPage = () => {
@@ -9,8 +9,7 @@ const AuthPage = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    name: "",
-    verificated: ""
+    name: "" // Это название поля в форме, но на сервер отправляем как nickname
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -26,38 +25,52 @@ const AuthPage = () => {
     setLoading(true);
 
     try {
-      let response;
-      
       if (isLogin) {
         // Отправляем запрос на вход
-        response = await authAPI.login({
+        const response = await authAPI.login({
           email: formData.email,
           password: formData.password
         });
+        
+        // Сохраняем токен и данные пользователя
+        if (response.data.access_token) {
+          localStorage.setItem('authToken', response.data.access_token);
+          localStorage.setItem('isAuthenticated', 'true');
+          
+          // Если есть данные о пользователе, сохраняем
+          if (response.data.user) {
+            localStorage.setItem('userNickname', response.data.user.nickname);
+            localStorage.setItem('userId', response.data.user.id);
+          }
+          
+          // Перенаправляем на главную
+          navigate("/");
+        }
       } else {
         // Отправляем запрос на регистрацию
-        response = await authAPI.register({
-          name: formData.name, // Используется как nickname
+        const response = await authAPI.register({
+          name: formData.name, // authAPI.register уже преобразует это в nickname
           email: formData.email,
-          password: formData.password,
-          verificated: formData.verificated
+          password: formData.password
         });
-      }
-
-      // Если успешно, сохраняем токен и данные пользователя
-      if (response.data.token) {
-        localStorage.setItem('authToken', response.data.token);
-        localStorage.setItem('isAuthenticated', 'true');
         
-        // Можно также сохранить некоторые данные пользователя
-        localStorage.setItem('userNickname', response.data.user.nickname);
-        
-        navigate("/profile");
+        if (response.status === 201) {
+          // Показываем сообщение об успешной регистрации
+          setError(""); // Очищаем ошибки
+          alert("Регистрация успешна! Теперь вы можете войти в систему.");
+          
+          // Переключаемся на форму входа и заполняем поля данными
+          setIsLogin(true);
+          setFormData({
+            ...formData,
+            password: "" // Очищаем только пароль
+          });
+        }
       }
     } catch (err) {
       console.error("Ошибка аутентификации:", err);
       setError(
-        err.response?.data?.message || 
+        err.response?.data?.detail || 
         "Произошла ошибка при авторизации. Пожалуйста, попробуйте еще раз."
       );
     } finally {
@@ -74,7 +87,7 @@ const AuthPage = () => {
     <div className="auth-container">
       <div className="auth-card">
         <div className="auth-logo">
-          <img src={logo} alt="Лого" />
+          <img src={logo} alt="Логотип" />
         </div>
         <h2>{isLogin ? "Вход в аккаунт" : "Регистрация"}</h2>
         
@@ -83,7 +96,7 @@ const AuthPage = () => {
         <form onSubmit={handleSubmit} className="auth-form">
           {!isLogin && (
             <div className="form-group">
-              <label>Имя</label>
+              <label>Никнейм</label>
               <input
                 type="text"
                 name="name"
@@ -118,20 +131,6 @@ const AuthPage = () => {
               disabled={loading}
             />
           </div>
-          
-          {!isLogin && (
-            <div className="form-group">
-              <label>Код для проверки</label>
-              <input
-                type="text"
-                name="verificated"
-                value={formData.verificated}
-                onChange={handleChange}
-                required
-                disabled={loading}
-              />
-            </div>
-          )}
           
           <button type="submit" className="auth-btn" disabled={loading}>
             {loading 

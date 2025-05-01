@@ -533,3 +533,365 @@
       padding: 20px;
     }
   }
+  /* Стили для загрузчика */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 500px;
+}
+
+.loading-indicator {
+  text-align: center;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(174, 18, 24, 0.3);
+  border-radius: 50%;
+  border-top-color: rgb(174, 18, 24);
+  animation: spin 1s linear infinite;
+  margin: 0 auto 20px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Стили для ошибок */
+.error-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 500px;
+}
+
+.error-message {
+  text-align: center;
+  background-color: #2a2a2a;
+  border-radius: 8px;
+  padding: 30px;
+  max-width: 500px;
+}
+
+.error-message h2 {
+  color: rgb(174, 18, 24);
+  margin-top: 0;
+}
+
+.error-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.error-actions button {
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: none;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.error-actions button:first-child {
+  background-color: rgb(174, 18, 24);
+  color: white;
+}
+
+.error-actions button:first-child:hover {
+  background-color: rgba(174, 18, 24, 0.8);
+}
+
+.error-actions button:last-child {
+  background-color: transparent;
+  border: 1px solid #3a3a3a;
+  color: #cccccc;
+}
+
+.error-actions button:last-child:hover {
+  background-color: #2a2a2a;
+  color: white;
+}
+
+/* Стили для пустых секций */
+.no-courses, .no-certificates, .no-courses-full {
+  text-align: center;
+  padding: 40px 20px;
+  background-color: #2a2a2a;
+  border-radius: 8px;
+}
+
+.no-courses p, .no-certificates p, .no-courses-full p {
+  margin-bottom: 20px;
+  color: #cccccc;
+}
+
+.browse-courses-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: rgb(174, 18, 24);
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.browse-courses-btn:hover {
+  background-color: rgba(174, 18, 24, 0.8);
+}
+
+/* Стили для сообщений формы */
+.form-message {
+  padding: 12px 15px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+.form-message.success {
+  background-color: rgba(39, 174, 96, 0.2);
+  color: #2ecc71;
+  border: 1px solid rgba(39, 174, 96, 0.3);
+}
+
+.form-message.error {
+  background-color: rgba(231, 76, 60, 0.2);
+  color: #e74c3c;
+  border: 1px solid rgba(231, 76, 60, 0.3);
+}
+
+/* Дополнительные стили для профиля */
+.profile-loading {
+  text-align: center;
+  padding: 20px;
+  color: #cccccc;
+}
+
+.profile-error {
+  color: #e74c3c;
+  padding: 15px;
+  margin: 10px 0;
+  background-color: rgba(231, 76, 60, 0.1);
+  border-radius: 6px;
+  text-align: center;
+}
+
+/* Адаптивные стили для профиля */
+@media (max-width: 768px) {
+  .profile-container {
+    flex-direction: column;
+    margin-top: 80px;
+  }
+  
+  .sidebar {
+    width: 100%;
+    margin-bottom: 20px;
+    position: relative;
+    top: 0;
+    order: 1;
+  }
+  
+  .profile-content {
+    order: 2;
+  }
+  
+  .user-stats {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .user-info-large {
+    margin-top: 20px;
+  }
+}
+
+/* Стили для боковой панели профиля в мобильном виде */
+@media (max-width: 480px) {
+  .profile-nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+  
+  .profile-nav li {
+    flex: 1 0 calc(50% - 5px);
+    min-width: 120px;
+    padding: 10px;
+    font-size: 14px;
+  }
+  
+  .user-avatar {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .user-avatar img {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .certificates-preview {
+    flex-direction: column;
+  }
+}
+
+/* Стили для курсов и сертификатов на мобильных устройствах */
+@media (max-width: 640px) {
+  .courses-grid, .certificates-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .course-card {
+    flex-direction: column;
+  }
+  
+  .course-imagee {
+    width: 100%;
+    height: 120px;
+  }
+}
+/* Добавьте эти стили в конец вашего файла ProfilePage.css */
+
+/* Стили для индикатора загрузки */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+  color: #cccccc;
+  font-size: 16px;
+  background-color: #2a2a2a;
+  border-radius: 8px;
+  min-height: 150px;
+}
+
+.loading::after {
+  content: "";
+  width: 20px;
+  height: 20px;
+  margin-left: 12px;
+  border-radius: 50%;
+  border: 3px solid #3a3a3a;
+  border-top-color: rgb(174, 18, 24);
+  animation: profile-loading-spinner 0.8s linear infinite;
+}
+
+@keyframes profile-loading-spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Стили для сообщений об ошибках */
+.error-message {
+  background-color: rgba(255, 59, 48, 0.1);
+  border: 1px solid rgba(255, 59, 48, 0.3);
+  color: #ff3b30;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+/* Стили для успешных сообщений */
+.success-message {
+  background-color: rgba(76, 175, 80, 0.1);
+  border: 1px solid rgba(76, 175, 80, 0.3);
+  color: #4CAF50;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+/* Стили для пустых состояний */
+.empty-state {
+  text-align: center;
+  padding: 30px;
+  background-color: #2a2a2a;
+  border-radius: 8px;
+  color: #cccccc;
+}
+
+.empty-state p {
+  margin-bottom: 15px;
+}
+
+.add-course-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: rgb(174, 18, 24);
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.add-course-btn:hover {
+  background-color: rgba(174, 18, 24, 0.8);
+}
+
+/* Улучшенный стиль для табов */
+.profile-nav li {
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-nav li::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: rgb(174, 18, 24);
+  transition: width 0.3s ease;
+}
+
+.profile-nav li:hover::after {
+  width: 100%;
+}
+
+.profile-nav li.active::after {
+  width: 100%;
+}
+
+/* Анимация для карточек курсов */
+.course-card, .course-card-full {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.course-card:hover, .course-card-full:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Улучшенный стиль для кнопки выхода */
+.logout-btn a {
+  position: relative;
+  padding-left: 20px;
+}
+
+.logout-btn a::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 15px;
+  height: 15px;
+  background-image: url("../../assets/images/Interface/Exit.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.logout-btn a:hover::before {
+  opacity: 1;
+}
